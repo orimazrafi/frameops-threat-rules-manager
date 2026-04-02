@@ -1,15 +1,12 @@
 import { useRef } from 'react'
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-  type Row,
-} from '@tanstack/react-table'
+import { flexRender, getCoreRowModel, useReactTable, type Row } from '@tanstack/react-table'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import type { ThreatRule } from '../types'
 import { threatRulesColumns, threatRulesGridTemplateColumns } from './threatRulesColumns'
+import { ThreatRuleVirtualRow } from './ThreatRuleVirtualRow'
 
 const ROW_HEIGHT_PX = 44
+const VIRTUAL_OVERSCAN = 4
 
 export type VirtualizedThreatRulesTableProps = {
   data: ThreatRule[]
@@ -39,7 +36,7 @@ export function VirtualizedThreatRulesTable({
     count: rows.length,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => ROW_HEIGHT_PX,
-    overscan: 12,
+    overscan: VIRTUAL_OVERSCAN,
     getItemKey: (index) => rows[index]?.id ?? index,
   })
 
@@ -81,37 +78,16 @@ export function VirtualizedThreatRulesTable({
           {virtualizer.getVirtualItems().map((vRow) => {
             const row = rows[vRow.index] as Row<ThreatRule> | undefined
             if (!row) return null
-            const selected = row.original.id === selectedRuleId
 
             return (
-              <div
+              <ThreatRuleVirtualRow
                 key={row.id}
-                role="row"
-                aria-selected={selected}
-                className={
-                  selected ? 'threat-rules-virtual-table__row is-selected' : 'threat-rules-virtual-table__row'
-                }
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: vRow.size,
-                  transform: `translateY(${vRow.start}px)`,
-                }}
-                onClick={() => onSelectRuleId(row.original.id)}
-              >
-                <div
-                  className="threat-rules-virtual-table__row-grid"
-                  style={{ gridTemplateColumns: threatRulesGridTemplateColumns }}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <div key={cell.id} className="threat-rules-virtual-table__cell">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </div>
-                  ))}
-                </div>
-              </div>
+                y={vRow.start}
+                height={vRow.size}
+                row={row}
+                isSelected={row.original.id === selectedRuleId}
+                onSelectRuleId={onSelectRuleId}
+              />
             )
           })}
         </div>

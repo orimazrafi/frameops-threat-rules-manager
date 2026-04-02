@@ -295,6 +295,8 @@ body {
   cursor: pointer;
   border-bottom: 1px solid var(--border);
   box-sizing: border-box;
+  /* Hint layer promotion for scroll-driven transform updates (bounded to visible rows only). */
+  will-change: transform;
 }
 
 .threat-rules-virtual-table__row:hover {
