@@ -39,7 +39,7 @@ export function ThreatRuleActions({
 
       {isSaving && (
         <p className="threat-rule-actions__saving" role="status" aria-live="polite">
-          Saving…
+          Updating…
         </p>
       )}
 

@@ -44,7 +44,7 @@ export function VirtualizedThreatRulesTable({
     return (
       <div className="threat-rules-virtual-table threat-rules-virtual-table--empty" role="region" aria-label="Threat rules">
         <p className="threat-rules-virtual-table__empty">
-          No rules match the current search and filters.
+          No rules match your current filters.
         </p>
       </div>
     )

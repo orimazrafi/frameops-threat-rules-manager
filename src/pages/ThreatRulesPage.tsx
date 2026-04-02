@@ -90,7 +90,7 @@ export function ThreatRulesPage() {
     return (
       <div className="threat-rules-page">
         <h1 className="threat-rules-page__title">Threat rules</h1>
-        <p className="threat-rules-page__state">No rules in the catalog.</p>
+        <p className="threat-rules-page__state">No rules available.</p>
       </div>
     )
   }
